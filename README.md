@@ -31,21 +31,3 @@
 ## Documentation
 You can see the automatic interactive API documentation using the endpoint: ```/docs```
 
-## Repository Setup
-
-You need to configure the following secrets
-
-### Heroku
-
-- ```HEROKU_API_KEY```
-- ```HEROKU_APP_NAME```
-- ```HEROKU_EMAIL```
-
-### Coveralls
-
-- ```COVERALLS_TOKEN```
-
-
-### MongoDB
-
-- ```DB_PASSWORD```
