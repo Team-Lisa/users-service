@@ -22,3 +22,7 @@ async def find_user(email: str = ""):
 @router.patch("/user", response_model=UserResponse)
 async def update_expo_token(email: str, token: Token):
     return UserController.update_expo_token(token,email)
+
+@router.delete("/users")
+async def delete_users(email: str = ""):
+    return UserController.delete_users(email)
