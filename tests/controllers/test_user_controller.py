@@ -119,8 +119,7 @@ def test_update_token(init):
         }
     }
     expo_token = "123"
-    token = Token(expo_token=expo_token)
-    response_update = UserController.update_expo_token(token,email)
+    response_update = UserController.update_expo_token(expo_token,email)
     assert response_update == {
         "user": {
             "name": name,

@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 
-from api.models.requests.token import Token
 from api.models.requests.user import User
 from api.controllers.user_controller import UserController
 from api.models.responses.user import User as UserResponse
@@ -19,9 +18,9 @@ async def create_user(user: User):
 async def find_user(email: str = ""):
     return UserController.find_by_email(email)
 
-@router.patch("/user", response_model=UserResponse)
-async def update_expo_token(email: str, token: Token):
-    return UserController.update_expo_token(token,email)
+@router.patch("/users", response_model=UserResponse)
+async def update_expo_token(user:User):
+    return UserController.update_expo_token(user.expo_token,user.email)
 
 @router.delete("/users")
 async def delete_users(email: str = ""):
