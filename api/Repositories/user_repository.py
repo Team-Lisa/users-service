@@ -24,7 +24,7 @@ class UserRepository():
 
     @staticmethod
     def update_expo_token(token,email):
-        User.objects(email=email).update(expo_token=token.expo_token)
+        User.objects(email=email).update(expo_token=token)
         return UserRepository.get_user_by_email(email)
 
     @staticmethod
