@@ -45,8 +45,8 @@ class UserController:
         result =  UserController.find_by_email(user.email)
         if result["users"]:
             if result["users"][0]["expo_token"] != user.expo_token:
-                return UserController.update_expo_token(user.expo_token,user.email)
-            return {"user": "expo token matched"}
+                UserController.update_expo_token(user.expo_token,user.email)
         else:
-            return UserController.create(user)
+            UserController.create(user)
+        return {"message": "session created"}
 
