@@ -31,8 +31,6 @@ class UserController:
             return {"user": result_list[0]}
         return {"user": []}
 
-
-
     @staticmethod
     def delete_users(email):
         if not email:
@@ -41,4 +39,14 @@ class UserController:
         else:
             UserRepository.delete_user_by_email(email)
             return {"user": "deleted user with specified email"}
+
+    @staticmethod
+    def post_sessions(user):
+        result =  UserController.find_by_email(user.email)
+        if result["users"]:
+            if result["users"][0]["expo_token"] != user.expo_token:
+                return UserController.update_expo_token(user.expo_token,user.email)
+            return {"user": "expo token matched"}
+        else:
+            return UserController.create(user)
 

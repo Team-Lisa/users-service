@@ -26,3 +26,7 @@ async def update_expo_token(token: Token, email: str = ""):
 @router.delete("/users")
 async def delete_users(email: str = ""):
     return UserController.delete_users(email)
+
+@router.post("/users/sessions")
+async def post_sesions(user: User):
+    return UserController.post_sessions(user)

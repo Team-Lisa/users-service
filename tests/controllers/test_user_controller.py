@@ -128,3 +128,61 @@ def test_update_token(init):
         }
     }
 
+def test_post_sessions_existing_user_diferent_token(init):
+    name = "mockname"
+    email = "mockname@email.com"
+    expo_token = "123"
+    user = User(name=name,email=email,expo_token =expo_token)
+    response = UserController.create(user)
+    assert response == {
+        "user": {
+            "name": name,
+            "email": email,
+            "expo_token": expo_token
+        }
+    }
+    new_expo_token = "1234"
+    user_differen_token = User(name=name,email=email,expo_token =new_expo_token)
+    response_sessions = UserController.post_sessions(user_differen_token)
+    assert response_sessions == {
+        "user": {
+            "name": name,
+            "email": email,
+            "expo_token": new_expo_token
+        }
+    }
+
+def test_post_sessions_existing_user_diferent_same_token(init):
+    name = "mockname"
+    email = "mockname@email.com"
+    expo_token = "123"
+    user = User(name=name,email=email,expo_token =expo_token)
+    response = UserController.create(user)
+    assert response == {
+        "user": {
+            "name": name,
+            "email": email,
+            "expo_token": expo_token
+        }
+    }
+    response_sessions = UserController.post_sessions(user)
+    assert response_sessions == {'user': 'expo token matched'}
+
+    response_all_users = UserController.find_by_email("")
+    assert len(response_all_users["users"])== 1
+
+def test_post_sessions_non_existing_user_creates_user(init):
+    name = "mockname"
+    email = "mockname@email.com"
+    expo_token = "123"
+    user = User(name=name,email=email,expo_token =expo_token)
+    response = UserController.post_sessions(user)
+    assert response == {
+        "user": {
+            "name": name,
+            "email": email,
+            "expo_token": expo_token
+        }
+    }
+    response_all_users = UserController.find_by_email("")
+    assert len(response_all_users["users"])== 1
