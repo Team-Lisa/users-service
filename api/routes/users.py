@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from api.models.requests.user import User
+from api.models.requests.user import User, CreateUser
 from api.controllers.user_controller import UserController
 from api.models.responses.message import Message
 from api.models.responses.user import User as UserResponse
@@ -12,7 +12,7 @@ router = APIRouter(tags=["Users"])
 
 
 @router.post("/users", response_model=UserResponse)
-async def create_user(user: User):
+async def create_user(user: CreateUser):
     return UserController.create(user)
 
 
