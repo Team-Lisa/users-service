@@ -44,6 +44,7 @@ class UserController:
     def post_sessions(user):
         result =  UserController.find_by_email(user.email)
         if result["users"]:
+            UserRepository.update_last_connection(user.last_connection, user.email)
             if result["users"][0]["expo_token"] != user.expo_token:
                 UserController.update_expo_token(user.expo_token,user.email)
         else:
