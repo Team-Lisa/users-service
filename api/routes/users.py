@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from api.models.requests.user import User, CreateUser
+from api.models.requests.user import User
 from api.controllers.user_controller import UserController
 from api.models.responses.message import Message
 from api.models.responses.user import User as UserResponse
@@ -12,9 +12,8 @@ router = APIRouter(tags=["Users"])
 
 
 @router.post("/users", response_model=UserResponse)
-async def create_user(user: CreateUser):
+async def create_user(user: User):
     return UserController.create(user)
-
 
 @router.get("/users",response_model=UsersResponse)
 async def find_user(email: str = ""):
@@ -31,3 +30,7 @@ async def delete_users(email: str = ""):
 @router.post("/users/sessions", status_code=201, response_model=Message)
 async def post_sesions(user: User):
     return UserController.post_sessions(user)
+
+@router.get("/users/lastConnection")
+async def get_users_with_last_connection(frm: int = 0, to: int = 0):
+    return UserController.get_users_with_last_connection(frm, to)
