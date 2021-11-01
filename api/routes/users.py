@@ -15,7 +15,6 @@ router = APIRouter(tags=["Users"])
 async def create_user(user: User):
     return UserController.create(user)
 
-
 @router.get("/users",response_model=UsersResponse)
 async def find_user(email: str = ""):
     return UserController.find_by_email(email)
@@ -31,3 +30,7 @@ async def delete_users(email: str = ""):
 @router.post("/users/sessions", status_code=201, response_model=Message)
 async def post_sesions(user: User):
     return UserController.post_sessions(user)
+
+@router.get("/users/lastConnection")
+async def get_users_with_last_connection(frm: int = 0, to: int = 0):
+    return UserController.get_users_with_last_connection(frm, to)
