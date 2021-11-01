@@ -44,9 +44,18 @@ class UserController:
     def post_sessions(user):
         result =  UserController.find_by_email(user.email)
         if result["users"]:
+            UserRepository.update_last_connection(user.email)
             if result["users"][0]["expo_token"] != user.expo_token:
                 UserController.update_expo_token(user.expo_token,user.email)
         else:
             UserController.create(user)
         return {"message": "session created"}
 
+    @staticmethod
+    def get_users_with_last_connection(frm, to):
+        result = UserRepository.get_users_with_last_connection(frm, to)
+        result = map(lambda user: user.convert_to_json(), list(result))
+        result_list = list(result)
+        if len(result_list) == 0:
+            return {"users": []}
+        return {"users": result_list}
