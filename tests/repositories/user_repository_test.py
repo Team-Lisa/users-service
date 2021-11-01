@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from api.Repositories.user_repository import UserRepository
 from api.models.user import User
 
@@ -47,6 +49,15 @@ def test_get_all_users(init):
     assert result[1].email == email2
     assert result[1].expo_token == expo_token2
 
+def test_get_users_with_last_connection(init):
+    name = "mockname"
+    email = "mockname@email.com"
+    expo_token = "123"
+    UserRepository.add_user(User(name=name,email=email,expo_token=expo_token))
+    result = UserRepository.get_users_with_last_connection(5,0)
+    assert result.get().name == name
+    assert result.get().email == email
+    assert result.get().expo_token == expo_token
 
 def test_delete_all_users(init):
     UserRepository.delete_all_users()

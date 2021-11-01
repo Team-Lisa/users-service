@@ -2,7 +2,7 @@ import pytest
 
 from api.controllers.user_controller import UserController
 from api.models.requests.token import Token
-from api.models.requests.user import User, CreateUser
+from api.models.requests.user import User
 from fastapi import HTTPException
 from datetime import datetime
 
@@ -12,7 +12,7 @@ def test_create_user_with_all_parameters(init):
     email = "mockname@email.com"
     expo_token = "123"
     last_connection = datetime.now().date()
-    user = CreateUser(name=name,email=email,expo_token=expo_token)
+    user = User(name=name,email=email,expo_token=expo_token)
     response = UserController.create(user)
     assert response == {
         "user": {
@@ -28,7 +28,7 @@ def test_create_user_without_expo_token(init):
     email = "mockname@email.com"
     expo_token = ""
     last_connection = datetime.now().date()
-    user = CreateUser(name=name,email=email,expo_token=expo_token)
+    user = User(name=name,email=email,expo_token=expo_token)
     response = UserController.create(user)
     assert response == {
         "user": {
@@ -44,7 +44,7 @@ def test_delete_user_by_email(init):
     email = "mockname@email.com"
     expo_token = "123"
     last_connection = datetime.now().date().strftime('%Y-%m-%d')
-    user = User(name=name,email=email,expo_token=expo_token, last_connection=last_connection)
+    user = User(name=name,email=email,expo_token=expo_token)
     UserController.create(user)
     delete_response = UserController.delete_users(email)
     get_response = UserController.find_by_email("")
@@ -56,12 +56,12 @@ def test_delete_all_users(init):
     email = "mockname@email.com"
     expo_token = "123"
     last_connection = datetime.now().date().strftime('%Y-%m-%d')
-    user = User(name=name,email=email,expo_token=expo_token, last_connection=last_connection)
+    user = User(name=name,email=email,expo_token=expo_token)
     UserController.create(user)
     name = "mockname2"
     email = "mockname@email.com2"
     expo_token = "1234"
-    user = User(name=name,email=email,expo_token=expo_token, last_connection=last_connection)
+    user = User(name=name,email=email,expo_token=expo_token)
     UserController.create(user)
     delete_response = UserController.delete_users("")
     get_response = UserController.find_by_email("")
@@ -73,7 +73,7 @@ def test_find_user_by_email(init):
     email = "mockname@email.com"
     expo_token = "123"
     last_connection = datetime.now().date().strftime('%Y-%m-%d')
-    user = User(name=name,email=email,expo_token=expo_token,last_connection=last_connection)
+    user = User(name=name,email=email,expo_token=expo_token)
     UserController.create(user)
     response = UserController.find_by_email(email)
     assert response == {
@@ -92,11 +92,11 @@ def test_find_all_users(init):
     email = "mockname@email.com"
     expo_token = "123"
     last_connection = datetime.now().date().strftime('%Y-%m-%d')
-    UserController.create(User(name=name,email=email,expo_token=expo_token,last_connection=last_connection))
+    UserController.create(User(name=name,email=email,expo_token=expo_token))
     name2 = "mockname2"
     email2 = "mockname2@email.com"
     expo_token2 = "1234"
-    UserController.create(User(name=name2,email=email2,expo_token=expo_token2,last_connection=last_connection))
+    UserController.create(User(name=name2,email=email2,expo_token=expo_token2))
     response = UserController.find_by_email("")
     assert len(response["users"]) == 2
     assert response == {
@@ -122,7 +122,7 @@ def test_update_token(init):
     email = "mockname@email.com"
     empty_expo_token = ""
     last_connection = datetime.now().date().strftime('%Y-%m-%d')
-    user = User(name=name,email=email,expo_token =empty_expo_token,last_connection=last_connection)
+    user = User(name=name,email=email,expo_token =empty_expo_token)
     response = UserController.create(user)
     assert response == {
         "user": {
@@ -148,7 +148,7 @@ def test_post_sessions_existing_user_diferent_token(init):
     email = "mockname@email.com"
     expo_token = "123"
     last_connection = datetime.now().date().strftime('%Y-%m-%d')
-    user = User(name=name,email=email,expo_token =expo_token,last_connection=last_connection)
+    user = User(name=name,email=email,expo_token =expo_token)
     response = UserController.create(user)
     assert response == {
         "user": {
@@ -159,7 +159,7 @@ def test_post_sessions_existing_user_diferent_token(init):
         }
     }
     new_expo_token = "1234"
-    user_differen_token = User(name=name,email=email,expo_token =new_expo_token,last_connection=last_connection)
+    user_differen_token = User(name=name,email=email,expo_token =new_expo_token)
     response_sessions = UserController.post_sessions(user_differen_token)
     assert response_sessions == {"message": "session created"}
 
@@ -168,7 +168,7 @@ def test_post_sessions_existing_user_diferent_same_token(init):
     email = "mockname@email.com"
     expo_token = "123"
     last_connection = datetime.now().date().strftime('%Y-%m-%d')
-    user = User(name=name,email=email,expo_token =expo_token,last_connection=last_connection)
+    user = User(name=name,email=email,expo_token =expo_token)
     response = UserController.create(user)
     assert response == response == {
         "user": {
@@ -190,8 +190,7 @@ def test_post_sessions_non_existing_user_creates_user(init):
     name = "mockname"
     email = "mockname@email.com"
     expo_token = "123"
-    last_connection = datetime.now().date().strftime('%Y-%m-%d')
-    user = User(name=name,email=email,expo_token =expo_token,last_connection=last_connection)
+    user = User(name=name,email=email,expo_token =expo_token)
     response = UserController.post_sessions(user)
     assert response == {
         "message": "session created"
@@ -204,22 +203,45 @@ def test_post_sessions_to_change_last_connection(init):
     name = "mockname"
     email = "mockname@email.com"
     empty_expo_token = ""
-    last_connection = datetime.now().date().strftime('%Y-%m-%d')
-    user = User(name=name, email=email, expo_token=empty_expo_token, last_connection=last_connection)
+    user = User(name=name, email=email, expo_token=empty_expo_token)
     response = UserController.create(user)
     assert response == {
         "user": {
             "name": name,
             "email": email,
             "expo_token": None,
-            "last_connection": last_connection
+            "last_connection": datetime.now().date().strftime('%Y-%m-%d')
         }
     }
-    last_connection = "2021-12-03"
-    user = User(name=name, email=email, expo_token=empty_expo_token, last_connection=last_connection)
+    user = User(name=name, email=email, expo_token=empty_expo_token)
     response_update = UserController.post_sessions(user)
     assert response_update == {
         "message": "session created"
     }
     response_all_users = UserController.find_by_email("")
-    assert response_all_users["users"][0]["last_connection"] == last_connection
+    assert response_all_users["users"][0]["last_connection"] == datetime.now().date().strftime('%Y-%m-%d')
+
+def test_get_users_with_last_connection(init):
+    name = "mockname"
+    email = "mockname@email.com"
+    expo_token = "ExpoToken"
+    user = User(name=name, email=email, expo_token=expo_token)
+    response = UserController.create(user)
+    assert response == {
+        "user": {
+            "name": name,
+            "email": email,
+            "expo_token": expo_token,
+            "last_connection": datetime.now().date().strftime('%Y-%m-%d')
+        }
+    }
+    users = UserController.get_users_with_last_connection(5,0)
+    assert users == {
+        "users": [
+        {
+            "name": "mockname",
+            "email": "mockname@email.com",
+            "expo_token": "ExpoToken",
+            "last_connection": datetime.now().date().strftime('%Y-%m-%d')
+        }
+    ]}
