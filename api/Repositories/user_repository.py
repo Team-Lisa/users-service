@@ -9,6 +9,7 @@ class UserRepository():
     @staticmethod
     def add_user(user):
         user.last_connection = datetime.now().date()
+        user.next_notification = datetime.now().date() + timedelta(1)
         return user.save()
 
     @staticmethod
