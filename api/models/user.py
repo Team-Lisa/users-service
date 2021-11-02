@@ -12,8 +12,7 @@ class User(Document):
     def convert_to_json(self):
         result = self.to_mongo().to_dict()
         result["last_connection"] = result["last_connection"].strftime('%Y-%m-%d')
+        result["next_notification"] = result["next_notification"].strftime('%Y-%m-%d')
         if "_id" in result:
             del result["_id"]
-        if "next_notification":
-            del result["next_notification"]
         return result

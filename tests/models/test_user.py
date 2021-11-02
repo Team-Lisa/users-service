@@ -13,7 +13,8 @@ def test_model_with_all_parameters_convert_to_json():
          "name": name,
          "email": email,
          "expo_token": expo_token,
-         "last_connection": last_connection
+         "last_connection": last_connection,
+        "next_notification": next_notification
     }
 
 def test_model_without_expo_token_convert_to_json():
@@ -27,5 +28,6 @@ def test_model_without_expo_token_convert_to_json():
          "name": name,
          "email": email,
          "expo_token": "",
-        "last_connection": last_connection
+        "last_connection": last_connection,
+        "next_notification": next_notification
     }
