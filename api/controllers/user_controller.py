@@ -32,6 +32,15 @@ class UserController:
         return {"user": []}
 
     @staticmethod
+    def update_next_notification(date, email):
+        result = UserRepository.update_next_notification(date, email)
+        result = map(lambda user: user.convert_to_json(), list(result))
+        result_list = list(result)
+        if len(result_list) > 0:
+            return {"user": result_list[0]}
+        return {"user": []}
+
+    @staticmethod
     def delete_users(email):
         if not email:
             UserRepository.delete_all_users()

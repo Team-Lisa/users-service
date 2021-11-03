@@ -56,3 +56,8 @@ class UserRepository():
     def delete_user_by_email(email):
         User.objects(email=email).delete()
 
+    @staticmethod
+    def update_next_notification(date, email):
+        User.objects(email=email).update(next_notification= datetime.strptime(date, '%Y-%m-%d'))
+        return UserRepository.get_user_by_email(email)
+

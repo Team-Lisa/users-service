@@ -266,3 +266,32 @@ def test_get_users_with_last_connection(init):
             "next_notification": (datetime.now().date() + timedelta(days=1)).strftime('%Y-%m-%d')
         }
     ]}
+
+    def test_update_next_notification(init):
+        name = "mockname"
+        email = "mockname@email.com"
+        empty_expo_token = ""
+        last_connection = datetime.now().date().strftime('%Y-%m-%d')
+        next_notification = (datetime.now().date() + timedelta(days=1)).strftime('%Y-%m-%d')
+        user = User(name=name, email=email, expo_token=empty_expo_token)
+        response = UserController.create(user)
+        assert response == {
+            "user": {
+                "name": name,
+                "email": email,
+                "expo_token": None,
+                "last_connection": last_connection,
+                "next_notification": next_notification
+            }
+        }
+        next_notification = (datetime.now().date() + timedelta(days=2)).strftime('%Y-%m-%d')
+        response_update = UserController.update_next_notification(next_notification, email)
+        assert response_update == {
+            "user": {
+                "name": name,
+                "email": email,
+                "expo_token": expo_token,
+                "last_connection": last_connection,
+                "next_notification": next_notification
+            }
+        }
