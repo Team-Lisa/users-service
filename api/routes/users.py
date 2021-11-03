@@ -24,7 +24,7 @@ async def update_expo_token(token: Token, email: str = ""):
     return UserController.update_expo_token(token.expo_token, email)
 
 @router.patch("/users/nextNotification", response_model=UserResponse)
-async def update_expo_token(next_notification_date: str = "", email: str = ""):
+async def update_next_notification(next_notification_date: str = "", email: str = ""):
     return UserController.update_next_notification(next_notification_date, email)
 
 @router.delete("/users")
