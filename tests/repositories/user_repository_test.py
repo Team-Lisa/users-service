@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from api.Repositories.user_repository import UserRepository
 from api.models.user import User
@@ -72,3 +72,20 @@ def test_delete_user_by_email(init):
     UserRepository.delete_user_by_email(email)
     result = UserRepository.get_all_users()
     assert result.count() == 0
+
+def test_update_next_notification(init):
+    name = "mockname"
+    email = "mockname@email.com"
+    expo_token = "123"
+    next_notification = (datetime.now().date() + timedelta(days=1))
+    result = UserRepository.add_user(User(name = name,email=email,expo_token=expo_token))
+    assert result.name == name
+    assert result.email == email
+    assert result.expo_token == expo_token
+    assert result.next_notification == next_notification
+    next_notification = (datetime.now().date() + timedelta(days=2)).strftime('%Y-%m-%d')
+    result_update = UserRepository.update_next_notification(next_notification, email=email)
+    result_user = result_update[0].convert_to_json()
+    assert result_user['name'] == name
+    assert result_user['email'] == email
+    assert result_user['next_notification'] == next_notification
