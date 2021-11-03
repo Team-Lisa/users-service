@@ -9,6 +9,7 @@ class UserRepository():
     @staticmethod
     def add_user(user):
         user.last_connection = datetime.now().date()
+        user.next_notification = datetime.now().date() + timedelta(1)
         return user.save()
 
     @staticmethod
@@ -54,4 +55,9 @@ class UserRepository():
     @staticmethod
     def delete_user_by_email(email):
         User.objects(email=email).delete()
+
+    @staticmethod
+    def update_next_notification(date, email):
+        User.objects(email=email).update(next_notification= datetime.strptime(date, '%Y-%m-%d'))
+        return UserRepository.get_user_by_email(email)
 
