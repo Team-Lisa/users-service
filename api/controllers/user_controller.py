@@ -56,9 +56,10 @@ class UserController:
             UserRepository.update_last_connection(user.email)
             if result["users"][0]["expo_token"] != user.expo_token:
                 UserController.update_expo_token(user.expo_token,user.email)
+            return {"message": "session updated"}
         else:
             UserController.create(user)
-        return {"message": "session created"}
+            return {"message": "session created"}
 
     @staticmethod
     def get_users_with_last_connection(frm, to):
