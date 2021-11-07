@@ -174,7 +174,7 @@ def test_post_sessions_existing_user_diferent_token(init):
     new_expo_token = "1234"
     user_differen_token = User(name=name,email=email,expo_token =new_expo_token, next_notification=next_notification)
     response_sessions = UserController.post_sessions(user_differen_token)
-    assert response_sessions == {"message": "session created"}
+    assert response_sessions == {"message": "session updated"}
 
 def test_post_sessions_existing_user_diferent_same_token(init):
     name = "mockname"
@@ -195,7 +195,7 @@ def test_post_sessions_existing_user_diferent_same_token(init):
     }
     response_sessions = UserController.post_sessions(user)
     assert response_sessions == {
-        "message": "session created"
+        "message": "session updated"
     }
 
     response_all_users = UserController.find_by_email("")
@@ -235,7 +235,7 @@ def test_post_sessions_to_change_last_connection(init):
     user = User(name=name, email=email, expo_token=empty_expo_token)
     response_update = UserController.post_sessions(user)
     assert response_update == {
-        "message": "session created"
+        "message": "session updated"
     }
     response_all_users = UserController.find_by_email("")
     assert response_all_users["users"][0]["last_connection"] == datetime.now().date().strftime('%Y-%m-%d')
