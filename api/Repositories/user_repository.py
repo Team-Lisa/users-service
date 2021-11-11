@@ -58,6 +58,6 @@ class UserRepository():
 
     @staticmethod
     def update_next_notification(date, email):
-        User.objects(email=email).update(next_notification= datetime.strptime(date, '%Y-%m-%d'))
+        User.objects(email=email).update(next_notification= datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
         return UserRepository.get_user_by_email(email)
 

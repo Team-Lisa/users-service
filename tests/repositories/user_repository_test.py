@@ -83,9 +83,9 @@ def test_update_next_notification(init):
     assert result.email == email
     assert result.expo_token == expo_token
     assert result.next_notification == next_notification
-    next_notification = (datetime.now().date() + timedelta(days=2)).strftime('%Y-%m-%d')
+    next_notification = (datetime.now().date() + timedelta(days=2)).strftime('%Y-%m-%d %H:%M:%S')
     result_update = UserRepository.update_next_notification(next_notification, email=email)
     result_user = result_update[0].convert_to_json()
     assert result_user['name'] == name
     assert result_user['email'] == email
-    assert result_user['next_notification'] == next_notification
+    assert result_user['next_notification'] == (datetime.now().date() + timedelta(days=2)).strftime('%Y-%m-%d')
