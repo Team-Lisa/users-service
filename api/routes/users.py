@@ -6,6 +6,7 @@ from api.models.responses.message import Message
 from api.models.responses.user import User as UserResponse
 from api.models.responses.users import Users as UsersResponse
 from api.models.requests.token import Token
+from api.models.requests.next_notification import NextNotification
 
 
 router = APIRouter(tags=["Users"])
@@ -24,8 +25,8 @@ async def update_expo_token(token: Token, email: str = ""):
     return UserController.update_expo_token(token.expo_token, email)
 
 @router.patch("/users/nextNotification", response_model=UserResponse)
-async def update_expo_token(next_notification_date: str = "", email: str = ""):
-    return UserController.update_next_notification(next_notification_date, email)
+async def update_expo_token(next_notification: NextNotification):
+    return UserController.update_next_notification(next_notification.date, next_notification.email)
 
 @router.delete("/users")
 async def delete_users(email: str = ""):
